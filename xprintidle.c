@@ -78,22 +78,18 @@ int main(int argc, char *argv[])
 
   setlinebuf(stdout);
 
-  while(1) {
-	  
-    if (!XScreenSaverQueryExtension(dpy, &event_basep, &error_basep)) {
-      fprintf(stderr, "screen saver extension not supported\n");
-      return 1;
-    }
-  
-    if (!XScreenSaverQueryInfo(dpy, DefaultRootWindow(dpy), &ssi)) {
-      fprintf(stderr, "couldn't query screen saver info\n");
-      return 1;
-    }
-
-    printf("%lu\t%lu\n", time(NULL), workaroundCreepyXServer(dpy, ssi.idle));
-    sleep(1);
+  if (!XScreenSaverQueryExtension(dpy, &event_basep, &error_basep)) {
+    fprintf(stderr, "screen saver extension not supported\n");
+    return 1;
   }
-  
+
+  if (!XScreenSaverQueryInfo(dpy, DefaultRootWindow(dpy), &ssi)) {
+    fprintf(stderr, "couldn't query screen saver info\n");
+    return 1;
+  }
+
+  printf("%lu\t%lu\n", time(NULL), workaroundCreepyXServer(dpy, ssi.idle));
+
   return 0;
 }
 
